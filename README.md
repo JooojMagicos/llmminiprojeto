@@ -1,1 +1,1 @@
-readme
+![alt text](https://github.com/a22406904joseleite/LP2-A22406904-A22409537/tree/main/src/images/img.png?raw=true)

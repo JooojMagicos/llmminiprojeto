@@ -1,0 +1,120 @@
+ o que vocÊ acha que um LLM poderia fazer de util nesse programa ?
+Pelo que vejo no quadro que enviaste, vocês já estão a pensar em usar o LLM para **validação de inputs** e para **transformações de texto** (ex.: ordenar tarefas com base em descrições). Isso faz sentido — mas um LLM pode ir *bem além* disso sem fugir do escopo do projeto.
+
+Aqui estão **ideias úteis e realistas** do que um LLM poderia fazer dentro deste programa:
+
+---
+
+# ✅ **O QUE UM LLM PODE FAZER DE ÚTIL NO VOSSO PROGRAMA**
+
+## **1. Validar inputs mais complexos (já planeado, mas pode ser expandido)**
+
+Além de validar *“string em formato correto”*, também pode:
+
+* detetar ambiguidades (“amanhã às 3” → qual dia?).
+* sugerir correções (“23/13/2024” → o mês não existe).
+* completar informação em falta (“Reunião com João” → falta data/hora → pedir ao utilizador).
+
+Isto reduz erros e torna o sistema mais robusto.
+
+---
+
+## **2. Interpretar tarefas escritas em linguagem natural**
+
+Um utilizador poderia inserir:
+
+> “Lembrar de enviar email ao professor na segunda de manhã”
+
+E o LLM devolveria uma estrutura Java:
+
+```json
+{
+  "titulo": "Enviar email ao professor",
+  "data": "2025-02-17",
+  "hora": "09:00"
+}
+```
+
+Ou seja: **parser inteligente** de texto → objeto Task.
+Isto evita interfaces rígidas e melhora muito a UX.
+
+---
+
+## **3. Ordenação inteligente (vocês já usam, mas podem ir mais longe)**
+
+Um LLM pode:
+
+* ordenar por cronologia mesmo com datas escritas informalmente (“depois do almoço”, “na próxima sexta”).
+* agrupar tarefas semelhantes.
+* detectar duplicadas (“comprar leite” / “ir ao supermercado comprar leite”).
+
+---
+
+## **4. Gerar explicações, logs e mensagens para o utilizador**
+
+Em vez de mensagens secas do sistema, o LLM pode gerar:
+
+* sugestões (“Pareces ter muitas tarefas para segunda, quer distribuir?”)
+* feedback personalizado
+* resumos diários:
+
+> “Hoje tens 3 tarefas pendentes: reunião, relatório e treino.”
+
+É ótimo para tornar o programa mais “vivo”.
+
+---
+
+## **5. Conversão automática de formatos**
+
+Enviar uma lista de tarefas e pedir:
+
+* “Transforma em JSON”
+* “Cria um texto pronto para imprimir”
+* “Gera um resumo para apresentação”
+
+O LLM pode converter rapidamente entre formatos.
+
+---
+
+## **6. Detectar inconsistências**
+
+Exemplo:
+
+* Data passada
+* Tarefa diária com horário fora do permitido
+* Repetições sem nexo (tarefa marcada para 02:00 mas o utilizador dorme)
+
+O LLM pode alertar e sugerir ajustes.
+
+---
+
+## **7. Geração automática de tarefas recorrentes**
+
+O LLM pode interpretar:
+
+> “Adicionar treino todas as segundas e quartas até abril”
+
+E devolver já a lista expandida e validada.
+
+---
+
+# 📌 **RESUMO DO QUE UM LLM DE FACTO AJUDA**
+
+✔ Validar melhor do que regex
+✔ Interpretar linguagem natural
+✔ Ordenar / organizar tarefas inteligentemente
+✔ Criar objetos Java a partir de texto
+✔ Tornar mensagens mais úteis e personalizadas
+✔ Transformar formatos (string → JSON → lista formatada)
+✔ Ajudar na gestão inteligente do tempo
+
+---
+
+Se quiseres, posso também:
+✅ desenhar uma arquitetura simples com classes + LLM
+ou
+✅ escrever os prompts ideais para usar no vosso projeto
+ou
+✅ criar exemplos de input/output entre Java ↔ LLM.
+
+Queres avançar para alguma dessas?
