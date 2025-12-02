@@ -1,45 +1,39 @@
 import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Estrutura que mapeia meses para objetos {@link Dias}.
- * Cada entrada do mapa corresponde a um mês do ano e contém
- * as tarefas desse mês organizadas por dia e hora.
- *
- * <p>Responsabilidades:</p>
- * <ul>
- *   <li>Armazenar os meses do ano usando um HashMap.</li>
- *   <li>Garantir que cada mês possui sua própria estrutura de Dias.</li>
- *   <li>Fornecer acesso e criação dinâmica de meses quando necessário.</li>
- * </ul>
- */
 public class Data {
+    private final HashMap<Integer, Dia> meses = new HashMap<>();
 
-    /**
-     * HashMap que guarda: mês → objeto Dias.
-     */
-    private HashMap<Integer, Dia> meses;
-
-    /** Cria um novo mapa de meses vazio. */
-    public Data() {
-        meses = new HashMap<>();
+    public Dia getDia(int mes, int dia) {
+        Dia diaObj = meses.computeIfAbsent(mes, m -> new Dia());
+        return diaObj;
     }
 
-    /**
-     * Obtém o objeto Dias correspondente ao mês dado.
-     * Se não existir, cria automaticamente.
-     *
-     * @param mes número do mês (1–12)
-     * @return o objeto Dias referente ao mês
-     */
-    public Dia getDiasDoMes(int mes) {
-        meses.putIfAbsent(mes, new Dia());
-        return meses.get(mes);
-    }
-
-    /**
-     * @return o HashMap completo contendo todos os meses registados
-     */
-    public HashMap<Integer, Dia> getMeses() {
+    public Map<Integer, Dia> getMeses() {
         return meses;
+    }
+
+    public int getMaxDiasDoMes(int mes) {
+        return switch (mes) {
+            case 1,3,5,7,8,10,12 -> 31;
+            case 4,6,9,11 -> 30;
+            case 2 -> 28; // sem considerar anos bissextos, como pediste
+            default -> throw new IllegalArgumentException("Mês inválido");
+        };
+    }
+
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        meses.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(entry -> {
+                    int mes = entry.getKey();
+                    sb.append("Mês ").append(mes).append(":\n");
+                    sb.append(entry.getValue());
+                    sb.append("\n");
+                });
+        return sb.toString();
     }
 }

@@ -1,39 +1,49 @@
-/**
- * Estrutura principal do programa.
- * Contém um objeto {@link Data} que organiza todas as tarefas
- * por mês, dia e hora.
- *
- * <p>Responsabilidades:</p>
- * <ul>
- *   <li>Adicionar tarefas à estrutura correta (mês → dia → hora).</li>
- *   <li>Delegar ao LLM validação ou reorganização de dados textuais.</li>
- *   <li>Fornecer listagens formatadas das tarefas.</li>
- * </ul>
- */
+
+
 public class ListaTarefas {
+    private final Data data = new Data();
 
-    private Data data;
-
-    /** Inicializa a estrutura principal de organização. */
-    public ListaTarefas() {
-        data = new Data();
-    }
-
-    /**
-     * Adiciona uma tarefa a um mês e dia específicos.
-     *
-     * @param titulo título da tarefa
-     * @param hora hora no formato HH:mm
-     * @param mes número do mês
-     * @param dia número do dia
-     */
     public void adicionarTarefa(String titulo, String hora, int mes, int dia) {
-        Dia dias = data.getDiasDoMes(mes);
-        dias.adicionarTarefa(new Tarefa(titulo, hora));
+        validarParametros(titulo, hora, mes, dia);
+        Dia d = data.getDia(mes, dia);
+        d.adicionarTarefa(new Tarefa(titulo, hora));
     }
 
-    /** @return estrutura completa de meses e tarefas */
+    private void validarParametros(String titulo, String hora, int mes, int dia) {
+        if (titulo == null || titulo.trim().isEmpty())
+            throw new IllegalArgumentException("Título vazio");
+
+        // Validação simples da hora
+        if (!hora.matches("\\d{2}:\\d{2}"))
+            throw new IllegalArgumentException("Hora inválida (use HH:mm)");
+
+        String[] partes = hora.split(":");
+        int hh = Integer.parseInt(partes[0]);
+        int mm = Integer.parseInt(partes[1]);
+
+        if (hh < 0 || hh > 23)
+            throw new IllegalArgumentException("Hora inválida (HH deve ser 00–23)");
+
+        if (mm < 0 || mm > 59)
+            throw new IllegalArgumentException("Minutos inválidos (mm deve ser 00–59)");
+
+        // Validação simples de mês e dia
+        if (mes < 1 || mes > 12)
+            throw new IllegalArgumentException("Mês inválido");
+
+        int maxDia = data.getMaxDiasDoMes(mes);
+
+        if (dia < 1 || dia > maxDia)
+            throw new IllegalArgumentException("Dia inválido (máximo para o mês " + mes + " é " + maxDia + ")");
+    }
+
+
     public Data getData() {
         return data;
+    }
+
+    @Override
+    public String toString() {
+        return data.toString();
     }
 }
