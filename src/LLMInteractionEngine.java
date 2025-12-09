@@ -1,3 +1,4 @@
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -11,6 +12,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+
 
 public class LLMInteractionEngine {
 
@@ -26,6 +28,22 @@ public class LLMInteractionEngine {
         this.useHack = useHack;
     }
 
+
+    public String getUrl(){
+        return this.url;
+    }
+
+    public String getApiKey(){
+        return this.apiKey;
+    }
+
+    public String getModel(){
+        return this.model;
+    }
+
+    public boolean getUseHack(){
+        return this.useHack;
+    }
     public LLMInteractionEngine(String url, String apiKey, String model) {
         this(url, apiKey, model, false);
     }
