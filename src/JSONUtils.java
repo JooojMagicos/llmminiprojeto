@@ -1,5 +1,23 @@
+/**
+ * Classe utilitária para operações simples sobre strings JSON.
+ * <p>
+ * Contém métodos auxiliares para formatação básica de JSON
+ * e extração simples de valores associados a chaves.
+ * </p>
+ */
 public class JSONUtils {
 
+    /**
+     * Formata rapidamente uma string JSON, adicionando indentação
+     * e quebras de linha para melhorar a legibilidade.
+     * <p>
+     * Este método não realiza uma validação completa do JSON
+     * e assume que a string de entrada está minimamente bem formada.
+     * </p>
+     *
+     * @param json string JSON a formatar
+     * @return string JSON formatada
+     */
     static String quickJSONFormater(String json) {
         StringBuilder out = new StringBuilder();
         boolean inStr = false, esc = false;
@@ -29,11 +47,23 @@ public class JSONUtils {
             }
         }
         return out.toString();
-
     }
 
-    // Very naive JSON string field extractor: "key": "value"
-    // Does not work if multiple sub-fields have the same key
+    /**
+     * Extrai o valor de um campo JSON simples no formato {@code "chave": "valor"}.
+     * <p>
+     * Este método é ingênuo e não suporta:
+     * <ul>
+     *     <li>JSONs aninhados complexos</li>
+     *     <li>Múltiplos campos com a mesma chave</li>
+     *     <li>Valores que não sejam strings</li>
+     * </ul>
+     * </p>
+     *
+     * @param json string JSON de onde será extraído o valor
+     * @param key chave a procurar no JSON
+     * @return valor associado à chave ou {@code null} se não encontrado
+     */
     static String getJsonString(String json, String key) {
         String pattern = "\"" + key + "\"";
         int keyPos = json.indexOf(pattern);
@@ -42,11 +72,9 @@ public class JSONUtils {
         int colonPos = json.indexOf(':', keyPos + pattern.length());
         if (colonPos < 0) return null;
 
-        // find opening quote of the value
         int firstQuote = json.indexOf('"', colonPos + 1);
         if (firstQuote < 0) return null;
 
-        // find closing quote (very naive, minimal escaping handling)
         int secondQuote = json.indexOf('"', firstQuote + 1);
         while (secondQuote > 0 && json.charAt(secondQuote - 1) == '\\') {
             secondQuote = json.indexOf('"', secondQuote + 1);

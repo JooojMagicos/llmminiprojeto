@@ -1,15 +1,47 @@
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Classe principal da aplicação de gestão de tarefas.
+ * <p>
+ * Disponibiliza um menu de consola que permite:
+ * <ul>
+ *     <li>Adicionar tarefas</li>
+ *     <li>Listar tarefas pendentes</li>
+ *     <li>Marcar tarefas como feitas</li>
+ *     <li>Listar tarefas feitas</li>
+ *     <li>Apagar tarefas</li>
+ * </ul>
+ * </p>
+ * A validação dos dados da tarefa é realizada através de uma LLM.
+ */
 public class Main {
 
+    /** Chave de acesso à API da LLM */
     static String apiKey = "sk-51lNzxys8gwcmz3uluLVGQ";
+
+    /** URL do endpoint da API da LLM */
     static String url = "https://modelos.ai.ulusofona.pt/v1/completions";
+
+    /** Modelo de linguagem utilizado */
     static String model = "gpt-4-turbo";
 
+    /** Scanner para leitura de dados do utilizador */
     static Scanner sc = new Scanner(System.in);
+
+    /** Lista principal de tarefas */
     static ListaTarefas lista = new ListaTarefas();
 
+    /**
+     * Método principal da aplicação.
+     * <p>
+     * Inicializa o motor de interação com a LLM e apresenta
+     * um menu interativo em ciclo até o utilizador escolher sair.
+     * </p>
+     *
+     * @param args argumentos da linha de comandos (não utilizados)
+     * @throws Exception caso ocorra erro na comunicação com a LLM
+     */
     public static void main(String[] args) throws Exception {
 
         LLMInteractionEngine engine =
@@ -46,6 +78,18 @@ public class Main {
     // ===========================
     //       OPÇÃO 1: ADICIONAR
     // ===========================
+
+    /**
+     * Adiciona uma nova tarefa à lista.
+     * <p>
+     * Solicita ao utilizador os dados da tarefa e envia-os
+     * para uma LLM para validação. Caso a validação seja
+     * bem-sucedida, a tarefa é adicionada à lista.
+     * </p>
+     *
+     * @param engine motor de interação com a LLM
+     * @throws Exception caso ocorra erro na comunicação com a LLM
+     */
     private static void adicionar(LLMInteractionEngine engine) throws Exception {
         System.out.print("Título: ");
         String titulo = sc.nextLine();
@@ -60,8 +104,6 @@ public class Main {
         int dia = sc.nextInt();
         sc.nextLine();
 
-        // ---------- ENVIA À LLM PARA VALIDAÇÃO ----------
-        // ---------- ENVIA À LLM PARA VALIDAÇÃO ----------
         String prompt = "Verifique se a tarefa abaixo é válida.\n" +
                 "Regras: \n" +
                 "- Hora no formato HH:mm, entre 00:00 e 23:59\n" +
@@ -89,6 +131,14 @@ public class Main {
     // ===========================
     //       OPÇÃO 2: LISTAR
     // ===========================
+
+    /**
+     * Lista todas as tarefas pendentes.
+     * <p>
+     * A apresentação é feita através do método {@code toString()}
+     * da lista de tarefas.
+     * </p>
+     */
     private static void listarPendentes() {
         System.out.println("\n--- PENDENTES ---");
         System.out.println(lista);
@@ -97,6 +147,14 @@ public class Main {
     // ===========================
     //       OPÇÃO 3: MARCAR
     // ===========================
+
+    /**
+     * Marca uma tarefa como feita.
+     * <p>
+     * O utilizador escolhe o mês e depois seleciona
+     * uma tarefa da lista apresentada.
+     * </p>
+     */
     private static void marcarFeita() {
         System.out.print("Informe o mês: ");
         int mes = sc.nextInt();
@@ -125,11 +183,24 @@ public class Main {
         System.out.println("Tarefa marcada como feita: " + escolhida.getTitulo());
     }
 
+    /**
+     * Lista as tarefas marcadas como feitas.
+     * <p>
+     * Atualmente este método não possui implementação.
+     * </p>
+     */
     private static void listarFeitas() {
         System.out.println("\n--- FEITAS ---");
         // implementar lista de tarefas feitas se existir
     }
 
+    /**
+     * Apaga uma tarefa da lista.
+     * <p>
+     * O utilizador escolhe o mês e seleciona a tarefa
+     * que pretende remover.
+     * </p>
+     */
     private static void apagar() {
         System.out.print("Informe o mês: ");
         int mes = sc.nextInt();
