@@ -1,7 +1,4 @@
-
-
 public class JSONUtils {
-
 
     static String quickJSONFormater(String json) {
         StringBuilder out = new StringBuilder();

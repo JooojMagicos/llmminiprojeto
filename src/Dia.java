@@ -16,7 +16,6 @@ public class Dia {
         return new ArrayList<>(tarefas); // cópia defensiva
     }
 
-
     @Override
     public String toString() {
         if (tarefas.isEmpty()) return "    (nenhuma tarefa)\n";
