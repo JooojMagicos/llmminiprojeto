@@ -111,4 +111,5 @@ public class ListaTarefasTest {
         assertTrue(s.contains("Mês 8"));
         assertTrue(s.contains("09:00 - X"));
     }
+
 }

@@ -32,6 +32,7 @@ public class App extends Application {
     // NOVO: lista de tarefas completas no modelo
     private List<Tarefa> feitas = new ArrayList<>();
 
+
     public List<Tarefa> getFeitas() { return feitas; }
     public void adicionarFeita(Tarefa t) { feitas.add(t); }
 

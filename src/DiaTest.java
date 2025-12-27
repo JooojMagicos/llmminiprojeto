@@ -71,6 +71,7 @@ public class DiaTest {
         assertEquals(1, d.getTarefas().size(), "modificar cópia não deve afetar a interna");
     }
 
+
     @Test
     void toStringVazioEComTarefas() {
         Dia d = new Dia();

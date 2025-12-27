@@ -27,6 +27,7 @@ public class TarefaTest {
         assertEquals("14:45 - Comprar", t.toString());
     }
 
+
     @Test
     void aceitaValoresComZeros() {
         Tarefa t = new Tarefa("Z", "00:00");

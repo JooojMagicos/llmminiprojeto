@@ -59,6 +59,7 @@ public class JSONUtilsTest {
         assertNull(JSONUtils.getJsonString(json, "missing"));
     }
 
+
     @Test
     void getJsonStringComDoisCamposMesmoNomeRetornaPrimeiro() {
         String json = "{\"text\":\"primeiro\",\"text\":\"segundo\"}";

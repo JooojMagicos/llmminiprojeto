@@ -46,6 +46,7 @@ public class LLMInteractionEngineTest {
         assertTrue(engine.getUseHack());
     }
 
+
     @Test
     void testEscapeJSONString() throws Exception {
         var method = LLMInteractionEngine.class.getDeclaredMethod("escapeJSONString", String.class);
