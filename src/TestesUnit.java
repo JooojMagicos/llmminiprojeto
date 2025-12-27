@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 import java.net.http.HttpClient;
@@ -419,39 +419,54 @@ class TudoTestFinal {
     static String model = "gpt-4-turbo";
 
 
+    static class FakeLLMEngine extends LLMInteractionEngine {
 
-    static class TestLLMEngine extends LLMInteractionEngine {
-        public TestLLMEngine(String url, String apiKey, String model, boolean useHack) {
-            super(url, apiKey, model, useHack);
+        private final boolean hack;
+
+        public FakeLLMEngine(boolean useHack) {
+            super("url", "key", "model", useHack);
+            this.hack = useHack;
         }
-
 
         @Override
         public String sendPrompt(String prompt) {
-            if (super.getUseHack()) {
-                // Simula envio com useHack = true
+            if (hack) {
                 return "{\"text\": \"OK (useHack)\"}";
-            } else {
-                // Simula envio normal
-                return "{\"text\": \"OK\"}";
             }
+            return "{\"text\": \"OK\"}";
         }
     }
 
-    //---
-    @Test
-    void testSendPrompt_normal() throws Exception {
-        TestLLMEngine engine = new TestLLMEngine(url, apiKey, model, false);
-        String resposta = engine.sendPrompt("Teste normal");
-        assertEquals("{\"text\": \"OK\"}", resposta);
-    }
 
     @Test
-    void testSendPrompt_useHack() throws Exception {
-        TestLLMEngine engine = new TestLLMEngine(url, apiKey, model, true);
-        String resposta = engine.sendPrompt("Teste hack");
-        assertEquals("{\"text\": \"OK (useHack)\"}", resposta);
+    void testSendPromptExists() throws Exception {
+        Method m = LLMInteractionEngine.class.getDeclaredMethod("sendPrompt", String.class);
+        assertNotNull(m);
     }
+
+
+    @Test
+    void testBuildJSON_privateMethod() throws Exception {
+        LLMInteractionEngine engine =
+                new LLMInteractionEngine(url, apiKey, model, false);
+
+        Method buildJSON =
+                LLMInteractionEngine.class.getDeclaredMethod(
+                        "buildJSON", String.class, String.class);
+
+        buildJSON.setAccessible(true);
+
+        String result = (String) buildJSON.invoke(
+                engine, "test-model", "Olá \"mundo\"");
+
+        assertEquals(
+                "{\"model\": \"test-model\",\"prompt\": \"Olá \\\"mundo\\\"\"}",
+                result
+        );
+    }
+
+
+
 
     @Test
     void testEscapeJSONString_nullAndSpecialChars() throws Exception {
@@ -467,15 +482,6 @@ class TudoTestFinal {
         assertEquals(esperado, escape.invoke(null, input));
     }
 
-    @Test
-    void testBuildJSON_privateMethod() throws Exception {
-        TestLLMEngine engine = new TestLLMEngine(url, apiKey, model, false);
-        Method buildJSON = LLMInteractionEngine.class.getDeclaredMethod("buildJSON", String.class, String.class);
-        buildJSON.setAccessible(true);
-
-        String result = (String) buildJSON.invoke(engine, "test-model", "Olá \"mundo\"");
-        assertEquals("{\"model\": \"test-model\",\"prompt\": \"Olá \\\"mundo\\\"\"}", result);
-    }
 
     @Test
     void testConstructors5() {

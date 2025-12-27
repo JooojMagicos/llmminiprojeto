@@ -156,4 +156,21 @@ public class LLMInteractionEngine {
 
         return resp.body() != null ? resp.body() : "";
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public boolean isUseHack() {
+        return useHack;
+    }
+
 }

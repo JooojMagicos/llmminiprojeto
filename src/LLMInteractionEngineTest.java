@@ -37,13 +37,13 @@ public class LLMInteractionEngineTest {
         assertEquals("url", engine.getUrl());
         assertEquals("key", engine.getApiKey());
         assertEquals("model", engine.getModel());
-        assertFalse(engine.getUseHack());
+        assertFalse(engine.isUseHack());
     }
 
     @Test
     void testConstrutorComHack() {
         LLMInteractionEngine engine = new LLMInteractionEngine("url", "key", "model", true);
-        assertTrue(engine.getUseHack());
+        assertTrue(engine.isUseHack());
     }
 
 
